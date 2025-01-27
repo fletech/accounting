@@ -162,10 +162,16 @@ import { getPeriodDates } from "../lib/dateUtils";
 import { supabase } from "../lib/supabase";
 import DashboardContent from "../components/DashboardContent";
 import PeriodSelector from "../components/PeriodSelector";
+import {
+  LoadingOverlay,
+  LoadingScreen,
+  LoadingSpinner,
+} from "../components/LoadingSpinner";
 
 export default function Dashboard() {
   const [currentPeriod, setCurrentPeriod] = useState(new Date());
   const [isLoading, setIsLoading] = useState(true);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [periodData, setPeriodData] = useState({
     incomes: [],
     expenses: [],
@@ -224,6 +230,7 @@ export default function Dashboard() {
       console.error("Error loading period data:", error);
     } finally {
       setIsLoading(false);
+      setIsInitialLoad(false);
     }
   }
 
@@ -240,10 +247,6 @@ export default function Dashboard() {
               <img src="/logo.svg" alt="" />
             </div>
             <div className="flex items-center gap-4">
-              <PeriodSelector
-                value={currentPeriod}
-                onChange={setCurrentPeriod}
-              />
               <button
                 onClick={() => supabase.auth.signOut()}
                 className="text-black hover:text-blueBrand"
@@ -255,8 +258,28 @@ export default function Dashboard() {
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {isLoading ? (
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ">
+        <div className="py-4 border-b border-gray-200 mb-6">
+          <PeriodSelector value={currentPeriod} onChange={setCurrentPeriod} />
+        </div>
+
+        {isInitialLoad ? (
+          <LoadingScreen />
+        ) : (
+          <div className="relative">
+            {isLoading && <LoadingOverlay />}
+            <DashboardContent
+              businessUnits={periodData.businessUnits}
+              incomes={periodData.incomes}
+              expenses={periodData.expenses}
+              categories={periodData.expenseCategories}
+              currentPeriod={currentPeriod}
+              companyId={companyId}
+              onUpdate={loadPeriodData}
+            />
+          </div>
+        )}
+        {/* {isLoading ? (
           <div>Loading...</div>
         ) : (
           <DashboardContent
@@ -268,7 +291,7 @@ export default function Dashboard() {
             companyId={companyId}
             onUpdate={loadPeriodData}
           />
-        )}
+        )} */}
       </main>
     </div>
   );
