@@ -157,86 +157,24 @@
 //   );
 // }
 
-import { useState, useEffect } from "react";
-import { getPeriodDates } from "../lib/dateUtils";
+import { useState } from "react";
+
 import { supabase } from "../lib/supabase";
 import DashboardContent from "../components/DashboardContent";
 import PeriodSelector from "../components/PeriodSelector";
-import {
-  LoadingOverlay,
-  LoadingScreen,
-  LoadingSpinner,
-} from "../components/LoadingSpinner";
+import { LoadingOverlay, LoadingScreen } from "../components/LoadingSpinner";
+import { useDashboardData } from "../hooks/useDashboardData";
 
 export default function Dashboard() {
   const [currentPeriod, setCurrentPeriod] = useState(new Date());
-  const [isLoading, setIsLoading] = useState(true);
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
-  const [periodData, setPeriodData] = useState({
-    incomes: [],
-    expenses: [],
-    settings: null,
-    businessUnits: [],
-    expenseCategories: [],
-  });
-
-  const companyId = "d7958f9a-7414-4f4c-bcb3-2de9e9e1c6f4";
-
-  async function loadPeriodData() {
-    setIsLoading(true);
-    try {
-      const { firstDay, lastDay } = getPeriodDates(currentPeriod);
-      const period = `${String(currentPeriod.getMonth() + 1).padStart(
-        2,
-        "0"
-      )}${currentPeriod.getFullYear()}`;
-
-      const [
-        { data: businessUnits },
-        { data: incomes },
-        { data: expenses },
-        { data: settings },
-        { data: categories },
-      ] = await Promise.all([
-        supabase.from("business_units").select("*").eq("active", true),
-        supabase
-          .from("monthly_incomes")
-          .select("*, business_units(name)")
-          .eq("period_date", period),
-        supabase
-          .from("expenses")
-          .select("*, expense_categories(name, has_vat)")
-          .gte("period_date", firstDay)
-          .lte("period_date", lastDay),
-        supabase
-          .from("monthly_settings")
-          .select()
-          .eq("period_date", period)
-          .maybeSingle(),
-        supabase
-          .from("expense_categories")
-          .select("*")
-          .eq("company_id", companyId),
-      ]);
-
-      setPeriodData({
-        businessUnits: businessUnits || [],
-        incomes: incomes || [],
-        expenses: expenses || [],
-        settings: settings || null,
-        expenseCategories: categories || [],
-      });
-    } catch (error) {
-      console.error("Error loading period data:", error);
-    } finally {
-      setIsLoading(false);
-      setIsInitialLoad(false);
-    }
-  }
-
-  useEffect(() => {
-    loadPeriodData();
-  }, [currentPeriod]);
+  const {
+    isLoading,
+    isInitialLoad,
+    periodData,
+    trendsData,
+    companyId,
+    refresh,
+  } = useDashboardData(currentPeriod);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -269,29 +207,13 @@ export default function Dashboard() {
           <div className="relative">
             {isLoading && <LoadingOverlay />}
             <DashboardContent
-              businessUnits={periodData.businessUnits}
-              incomes={periodData.incomes}
-              expenses={periodData.expenses}
-              categories={periodData.expenseCategories}
+              {...periodData}
               currentPeriod={currentPeriod}
               companyId={companyId}
-              onUpdate={loadPeriodData}
+              trendsData={trendsData}
             />
           </div>
         )}
-        {/* {isLoading ? (
-          <div>Loading...</div>
-        ) : (
-          <DashboardContent
-            businessUnits={periodData.businessUnits}
-            incomes={periodData.incomes}
-            expenses={periodData.expenses}
-            categories={periodData.expenseCategories}
-            currentPeriod={currentPeriod}
-            companyId={companyId}
-            onUpdate={loadPeriodData}
-          />
-        )} */}
       </main>
     </div>
   );
