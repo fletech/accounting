@@ -20,7 +20,7 @@ export function LanguageProvider({ children }) {
         if (user) {
           // Try to get user settings
           const { data: settings } = await supabase
-            .from("company_settings")
+            .from("company_settings_v1")
             .select("language")
             .eq("company_id", companyId)
             .single();

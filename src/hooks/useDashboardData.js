@@ -39,7 +39,7 @@ export function useDashboardData(currentPeriod) {
 
       // Query ingresos
       const { data: incomes, error: incomesError } = await supabase
-        .from("monthly_incomes")
+        .from("monthly_incomes_v1")
         .select("period_date, amount")
         .gte("period_date", startPeriod)
         .lte("period_date", endPeriod)
@@ -60,7 +60,7 @@ export function useDashboardData(currentPeriod) {
 
       // Query gastos
       const { data: expenses, error: expensesError } = await supabase
-        .from("expenses")
+        .from("expenses_v1")
         .select("amount, period_date")
         .gte("period_date", startDate)
         .lte("period_date", endDate)
@@ -116,23 +116,23 @@ export function useDashboardData(currentPeriod) {
         { data: settings, error: settingsError },
         { data: categories, error: categoriesError },
       ] = await Promise.all([
-        supabase.from("business_units").select("*").eq("active", true),
+        supabase.from("business_units_v1").select("*").eq("active", true),
         supabase
-          .from("monthly_incomes")
-          .select("*, business_units(name)")
+          .from("monthly_incomes_v1")
+          .select("*, business_units_v1(name)")
           .eq("period_date", period),
         supabase
-          .from("expenses")
-          .select("*, expense_categories(name, has_vat)")
+          .from("expenses_v1")
+          .select("*, expense_categories_v1(name, has_vat)")
           .gte("period_date", firstDay)
           .lte("period_date", lastDay),
         supabase
-          .from("monthly_settings")
+          .from("monthly_settings_v1")
           .select()
-          .eq("period_date", period)
+          .eq("period_date_v1", period)
           .maybeSingle(),
         supabase
-          .from("expense_categories")
+          .from("expense_categories_v1")
           .select("*")
           .eq("company_id", companyId),
       ]);

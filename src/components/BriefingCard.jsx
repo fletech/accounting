@@ -1,4 +1,5 @@
 import { TrendingUp, TrendingDown } from "lucide-react";
+import { useLanguage } from "../LanguageContext";
 
 export default function BriefingCard({
   title,
@@ -7,6 +8,8 @@ export default function BriefingCard({
   trend,
   onClick,
 }) {
+  const { t } = useLanguage();
+
   const isPositive = trend >= 0;
 
   return (
@@ -19,7 +22,9 @@ export default function BriefingCard({
           <div className="p-2 bg-blue-50 rounded-lg">
             <Icon className="w-6 h-6 text-blueBrand" />
           </div>
-          <h3 className="font-semibold text-gray-700">{title}</h3>
+          <h3 className="font-semibold text-gray-700">
+            {t("dashboard.income.title")}
+          </h3>
         </div>
         {trend !== undefined && (
           <div

@@ -27,7 +27,11 @@ export default function DashboardLayout({ children }) {
                 <Settings className="w-5 h-5" />
               </button>
               <button
-                onClick={() => supabase.auth.signOut()}
+                onClick={() => {
+                  supabase.auth.signOut();
+
+                  navigate("/login");
+                }}
                 className="flex items-center gap-2 text-gray-700 hover:text-gray-900"
                 title={t("common.logout")}
               >
@@ -38,7 +42,9 @@ export default function DashboardLayout({ children }) {
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">{children}</main>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+        {children}
+      </main>
     </div>
   );
 }

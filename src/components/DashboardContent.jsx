@@ -8,6 +8,7 @@ import IncomePanel from "./IncomePanel";
 import ExpensesPanel from "./ExpensesPanel";
 import CategoryList from "./CategoryList";
 import TrendGraph from "./TrendGraph";
+import { useLanguage } from "../lib/LanguageContext";
 
 export default function DashboardContent({
   businessUnits = [],
@@ -16,9 +17,9 @@ export default function DashboardContent({
   categories = [],
   currentPeriod,
   companyId,
-  onUpdate,
   trendsData = { incomes: [], expenses: [] },
 }) {
+  const { t } = useLanguage();
   const [activeModal, setActiveModal] = useState(null);
 
   // Cálculos para stats
@@ -91,7 +92,7 @@ export default function DashboardContent({
       <div className="grid md:grid-cols-3 gap-6 mb-6">
         <div onClick={() => setActiveModal("income")}>
           <StatCard
-            title="Ingresos"
+            title={t("dashboard.income.title")}
             amount={totalIncome}
             trend={incomeTrend || 0}
             icon={CreditCard}
@@ -99,14 +100,14 @@ export default function DashboardContent({
         </div>
         <div onClick={() => setActiveModal("expenses")}>
           <StatCard
-            title="Gastos"
+            title={t("dashboard.expenses.title")}
             amount={totalExpenses}
             trend={expensesTrend || 0}
             icon={Receipt}
           />
         </div>
         <StatCard
-          title="Resultado"
+          title={t("dashboard.results.title")}
           amount={profit}
           trend={profit > 0 ? incomeTrend : expensesTrend}
         />
@@ -115,11 +116,15 @@ export default function DashboardContent({
       {/* Graphs */}
       <div className="grid md:grid-cols-2 gap-6 mb-6">
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-          <h3 className="text-sm text-gray-600 mb-4">Evolución Ingresos</h3>
+          <h3 className="text-sm text-gray-600 mb-4">
+            {t("dashboard.income.historic")}
+          </h3>
           <TrendGraph data={incomeData} color="#10B981" />
         </div>
         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-          <h3 className="text-sm text-gray-600 mb-4">Evolución Gastos</h3>
+          <h3 className="text-sm text-gray-600 mb-4">
+            {t("dashboard.expenses.historic")}
+          </h3>
           <TrendGraph data={expenseData} color="#EF4444" />
         </div>
       </div>
@@ -156,7 +161,6 @@ export default function DashboardContent({
               currentPeriod={currentPeriod}
               companyId={companyId}
               onUpdate={() => {
-                onUpdate();
                 setActiveModal(null);
               }}
             />
@@ -174,7 +178,6 @@ export default function DashboardContent({
               currentPeriod={currentPeriod}
               companyId={companyId}
               onUpdate={() => {
-                onUpdate();
                 setActiveModal(null);
               }}
             />
@@ -263,7 +266,7 @@ export default function DashboardContent({
 //               currentPeriod={currentPeriod}
 //               companyId={companyId}
 //               onUpdate={() => {
-//                 onUpdate();
+//
 //                 setActiveModal(null);
 //               }}
 //             />
@@ -281,7 +284,7 @@ export default function DashboardContent({
 //               currentPeriod={currentPeriod}
 //               companyId={companyId}
 //               onUpdate={() => {
-//                 onUpdate();
+//
 //                 setActiveModal(null);
 //               }}
 //             />

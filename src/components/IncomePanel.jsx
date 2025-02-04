@@ -40,10 +40,12 @@ export default function IncomePanel({
         })
       );
 
-      const { error } = await supabase.from("monthly_incomes").upsert(updates, {
-        onConflict: "business_unit_id,period_date",
-        ignoreDuplicates: false,
-      });
+      const { error } = await supabase
+        .from("monthly_incomes_v1")
+        .upsert(updates, {
+          onConflict: "business_unit_id,period_date",
+          ignoreDuplicates: false,
+        });
 
       if (error) throw error;
       setIsEditing(false);

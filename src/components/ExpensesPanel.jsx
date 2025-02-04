@@ -43,7 +43,7 @@ export default function ExpensesPanel({
         notes: newExpense.notes,
       };
 
-      const { error } = await supabase.from("expenses").insert(expense);
+      const { error } = await supabase.from("expenses_v1").insert(expense);
       if (error) throw error;
 
       setIsAdding(false);

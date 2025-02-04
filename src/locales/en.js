@@ -26,12 +26,14 @@ export const en = {
       total: "Total Income",
       net: "Net Income",
       vat: "VAT Collected",
+      historic: "Income evolution",
     },
     expenses: {
       title: "Expenses",
       total: "Total Expenses",
       net: "Net Expenses",
       vat: "VAT Deducted",
+      historic: "Expenses evolution",
     },
     results: {
       title: "Results",

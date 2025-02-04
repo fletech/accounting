@@ -12,7 +12,7 @@ export function usePeriodSummary(period) {
   useEffect(() => {
     async function calculateSummary() {
       try {
-        const { data, error } = await supabase.from("transactions").select(`
+        const { data, error } = await supabase.from("transactions_v1").select(`
               amount,
               vat_amount,
               categories(type)

@@ -22,16 +22,18 @@ export const dk = {
   dashboard: {
     title: "Dashboard",
     income: {
-      title: "Indtægter",
-      total: "Samlede indtægter",
-      net: "Netto indtægter",
+      title: "Inkomst",
+      total: "Samlede inkomster",
+      net: "Netto inkomster",
       vat: "Opkrævet moms",
+      historic: "Inkomsttrend",
     },
     expenses: {
       title: "Udgifter",
       total: "Samlede udgifter",
       net: "Netto udgifter",
       vat: "Fratrukket moms",
+      historic: "Udgiftstrend",
     },
     results: {
       title: "Resultater",

@@ -25,7 +25,7 @@ export function useCompanySettings() {
 
       // Get user settings
       const { data, error } = await supabase
-        .from("company_settings")
+        .from("company_settings_v1")
         .select("*")
         .eq("company_id", companyId)
         .single();
@@ -48,7 +48,7 @@ export function useCompanySettings() {
         };
 
         const { data: newSettings, error: insertError } = await supabase
-          .from("company_settings")
+          .from("company_settings_v1")
           .insert(defaultSettings)
           .select()
           .single();
@@ -75,7 +75,7 @@ export function useCompanySettings() {
       if (!user) throw new Error("No authenticated user");
 
       const { data, error } = await supabase
-        .from("company_settings")
+        .from("company_settings_v1")
         .update(newSettings)
         .eq("company_id", companyId)
         .select()

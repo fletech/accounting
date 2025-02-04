@@ -26,12 +26,14 @@ export const es = {
       total: "Ingresos totales",
       net: "Ingresos netos",
       vat: "IVA recaudado",
+      historic: "Evolución de ingresos",
     },
     expenses: {
       title: "Gastos",
       total: "Gastos totales",
       net: "Gastos netos",
       vat: "IVA deducido",
+      historic: "Evolución de gastos",
     },
     results: {
       title: "Resultados",
