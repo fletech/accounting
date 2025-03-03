@@ -66,7 +66,7 @@ export default function StatCard({
           ) : (
             <TrendingDown className="w-4 h-4" />
           )}
-          <span>{Math.abs(trend)}%</span>
+          <span>{Math.abs(trend).toFixed(2)}%</span>
         </div>
       </div>
       <div className="flex items-baseline gap-2">

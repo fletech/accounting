@@ -88,48 +88,48 @@ export default function ExpensesPanel({
         <table className="w-full">
           <thead>
             <tr className="border-b border-gray-200">
-              <th className="text-left py-3 text-black">Date</th>
-              <th className="text-left py-3 text-black">Category</th>
-              <th className="text-right py-3 text-black">Amount</th>
-              <th className="text-right py-3 text-black">VAT</th>
-              <th className="text-left py-3 text-black">Notes</th>
+              <th className="text-left p-4 text-black">Date</th>
+              <th className="text-left p-4 text-black">Category</th>
+              <th className="text-right p-4 text-black">Amount</th>
+              <th className="text-right p-4 text-black">VAT Deductible</th>
+              <th className="text-left p-4 text-black">Notes</th>
             </tr>
           </thead>
           <tbody>
             {expenses.map((expense) => (
-              <tr key={expense.id} className="border-b border-gray-200">
-                <td className="py-2 text-black">
+              <tr key={expense.id} className="border-b border-gray-100">
+                <td className="py-2 px-4  text-black">
                   {expense.period_date
                     ? format(parseISO(expense.period_date), "dd/MM/yyyy")
-                    : "-"}
+                    : ""}
                 </td>
-                <td className="py-2 text-black">
+                <td className="py-2 px-4 text-black">
                   {categories.find((c) => c.id === expense.category_id)?.name ||
-                    "-"}
+                    ""}
                 </td>
-                <td className="py-2 text-right text-black">
+                <td className="py-2 px-4 text-right text-black">
                   {Number(expense.amount).toLocaleString("da-DK")} DKK
                 </td>
-                <td className="py-2 text-right text-black">
+                <td className="py-2 px-4 text-right text-black">
                   {expense.vat_amount
                     ? `${Number(expense.vat_amount).toLocaleString(
                         "da-DK"
                       )} DKK`
-                    : "-"}
+                    : ""}
                 </td>
-                <td className="py-2 text-black">{expense.notes || "-"}</td>
+                <td className="py-2 px-4 text-black">{expense.notes || ""}</td>
               </tr>
             ))}
           </tbody>
           <tfoot>
             <tr className="border-t border-gray-200 font-bold">
-              <td colSpan={2} className="py-3 text-black">
+              <td colSpan={2} className="p-4 text-black">
                 Total
               </td>
-              <td className="py-3 text-right text-black">
+              <td className="p-4 text-right text-black">
                 {totalExpenses.toLocaleString("da-DK")} DKK
               </td>
-              <td className="py-3 text-right text-black">
+              <td className="p-4 text-right text-black">
                 {totalVAT.toLocaleString("da-DK")} DKK
               </td>
               <td></td>
@@ -363,7 +363,7 @@ export default function ExpensesPanel({
 //                 <td className="py-2 text-black">
 //                   {expense.period_date
 //                     ? format(parseISO(expense.period_date), "dd/MM/yyyy")
-//                     : "-"}
+//                     : ""}
 //                 </td>
 //                 <td className="py-2 text-black">
 //                   {categories.find((c) => c.id === expense.category_id)?.name ||

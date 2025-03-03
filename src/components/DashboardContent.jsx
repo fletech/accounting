@@ -14,7 +14,7 @@ export default function DashboardContent({
   businessUnits = [],
   incomes = [],
   expenses = [],
-  categories = [],
+  expenseCategories = [],
   currentPeriod,
   companyId,
   trendsData = { incomes: [], expenses: [] },
@@ -69,9 +69,11 @@ export default function DashboardContent({
 
   // Preparar datos para categorías
   const expensesByCategory =
-    categories.length > 0
+    expenseCategories.length > 0
       ? expenses.reduce((acc, expense) => {
-          const category = categories.find((c) => c.id === expense.category_id);
+          const category = expenseCategories.find(
+            (c) => c.id === expense.category_id
+          );
           if (!category) return acc;
 
           if (!acc[category.id]) {
@@ -130,8 +132,7 @@ export default function DashboardContent({
       </div>
 
       {/* Categories */}
-      {expenses.length > 0 &&
-        categories.length > 0 &&
+      {expenseCategories.length > 0 &&
         Object.keys(expensesByCategory).length > 0 && (
           <div className="mb-6">
             <CategoryList
@@ -145,7 +146,7 @@ export default function DashboardContent({
       <MonthlyBalance
         incomes={incomes}
         expenses={expenses}
-        categories={categories}
+        categories={expenseCategories}
       />
 
       {/* Drawers */}
@@ -174,7 +175,7 @@ export default function DashboardContent({
           >
             <ExpensesPanel
               expenses={expenses}
-              categories={categories}
+              categories={expenseCategories}
               currentPeriod={currentPeriod}
               companyId={companyId}
               onUpdate={() => {
